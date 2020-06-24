@@ -8,28 +8,29 @@ Tachymeter::Tachymeter(int pin)
     attachInterrupt(digitalPinToInterrupt(_pin), updateEncoder, RISING);
 }
 
+/**
+ * @brief Each time a pulse is detected, it detects the delay between pulses to compute the frequency.
+ * 
+ */
 void updateEncoder()
 {
-    // Increment value for each pulse from encoder
-    encoderValue++;
-
-    if (nextTime == 0)
+    if (actualTime == 0)
     {
         actualTime = millis();
     }
-
     else
     {
-        nextTime; //A FINIR
+        frequency = 1 / actualTime;
+        actualTime = 0;
     }
 }
 
+/**
+ * @brief This method computes and return the wheel rotational speed
+ * 
+ * @return float rmp speed of the wheel
+ */
 float Tachymeter::getRPM()
 {
-    return (float)(encoderValue / ENC_COUNT_REV);
-    encoderValue = 0; // This permits to reset the encoderValue to start to count again from 0
-}
-
-void Tachymeter::computeRPM()
-{
+    return (float)(frequency / ENC_COUNT_REV) * 60;
 }

@@ -4,13 +4,10 @@
 #include <Arduino.h>
 
 // Motor encoder output pulse per rotation (change as required)
-#define ENC_COUNT_REV 374
-
-// Pulse count from encoder
-volatile long encoderValue;
+#define ENC_COUNT_REV 2
 
 volatile long actualTime;
-volatile long nextTime;
+float frequency;
 
 class Tachymeter
 {
@@ -23,7 +20,6 @@ private:
 public:
     Tachymeter(int pin);
     float getRPM();
-    void computeRPM();
 };
 
 #endif

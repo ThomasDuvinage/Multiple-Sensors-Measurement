@@ -4,7 +4,7 @@
 #include <Arduino.h>
 
 // Motor encoder output pulse per rotation (change as required)
-#define ENC_COUNT_REV 2
+#define ENC_COUNT_REV 1
 
 volatile long actualTime;
 float frequency;

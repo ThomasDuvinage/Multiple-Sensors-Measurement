@@ -1,4 +1,4 @@
-# Multiple-Sensors-Mesurement
+# Multiple-Sensors-Measurement
 
 The goal of this box is to store sensors data into an SD card to analyze a mechanism behavior. (a scooter for example)
 

@@ -13,8 +13,10 @@
 //#include "Tachymeter.h"
 #include "MPU6050.h"
 
-#define INTERVAL 5
+#define INTERVAL 10
 #define SD_CS 10
+
+#define MPU_INIT_ITERATION
 
 #define ASSERT(x)               \
     Serial.print("Assert in "); \

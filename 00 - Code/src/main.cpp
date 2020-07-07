@@ -16,13 +16,12 @@ void setup()
     ; // wait for serial port to connect. Needed for native USB port only
   }
 
-  // while (!mpu.begin(MPU6050_SCALE_2000DPS, MPU6050_RANGE_2G))
-  // {
-  //   ASSERT("Could not find a valid MPU6050 sensor, check wiring!")
-  //   delay(500);
-  // }
-
-  //TODO set the the average acceleration to initialize int
+  while (!mpu.begin(MPU6050_SCALE_2000DPS, MPU6050_RANGE_2G))
+  {
+    ASSERT("Could not find a valid MPU6050 sensor, check wiring!")
+    delay(500);
+  }
+  ASSERT("MPU6050 Initalized and calibrated")
 
   ASSERT("Initializing SD card...")
   // see if the card is present and can be initialized:
@@ -63,7 +62,7 @@ void loop()
       FILE_SPACER
       dataFile.print(ampMeter.getCurrent());
       FILE_SPACER
-      dataFile.println(voltMeter.getVoltage());
+      dataFile.print(voltMeter.getVoltage());
       FILE_SPACER
       dataFile.print((float)normAccel.XAxis);
       FILE_SPACER
@@ -71,9 +70,18 @@ void loop()
       FILE_SPACER
       dataFile.println((float)normAccel.ZAxis);
 
+      Serial.print(ampMeter.getCurrent());
+      Serial.print(" | ");
+      Serial.print(voltMeter.getMeanVoltage());
+      Serial.print(" | ");
+      Serial.print((float)normAccel.XAxis);
+      Serial.print(" | ");
+      Serial.print((float)normAccel.YAxis);
+      Serial.print(" | ");
+      Serial.println((float)normAccel.ZAxis);
+
       ASSERT("Line added to file")
     }
-    // if the file isn't open, pop up an error:
     else
     {
       ASSERT("error opening test.csv")
@@ -82,5 +90,9 @@ void loop()
     dataFile.close();
 
     previousTime = millis();
+  }
+  else
+  {
+    voltMeter.addVoltage();
   }
 }

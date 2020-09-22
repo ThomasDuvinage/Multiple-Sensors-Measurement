@@ -6,13 +6,15 @@ Ampmeter::Ampmeter(int pin)
     pinMode(_pin, INPUT);
 }
 
-float Ampmeter::getCurrent(){
+float Ampmeter::getCurrent()
+{
     int rawValue = analogRead(_pin);
     float voltage = (rawValue / 1024.0) * 5000;
 
     return ((voltage - ACSoffset) / MVperAMP);
 }
 
-String Ampmeter::getStringCurrent(){
+String Ampmeter::getStringCurrent()
+{
     return String(getCurrent());
 }

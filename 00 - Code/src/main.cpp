@@ -3,6 +3,7 @@
 Ampmeter ampMeter(A1);
 Voltmeter voltMeter(A0);
 MPU6050 mpu;
+Tachymeter tachymeter(3);
 
 long int previousTime = 0;
 long int actualInterval;
@@ -30,15 +31,15 @@ void setup()
     ASSERT("Card failed, or not present")
   }
 
-  if (SD.exists("test.csv"))
+  if (SD.exists("data.csv"))
   {
     //TODO create an algorithm that can save multiple files by choosing the right file name
     ASSERT("delete file")
-    SD.remove("test.csv");
+    SD.remove("data.csv");
   }
 
-  dataFile = SD.open("test.csv", FILE_WRITE);
-  dataFile.println("time;AMPMETER;VOLTMETER;Acceleration_X;Acceleration_Y;Acceleration_Z");
+  dataFile = SD.open("data.csv", FILE_WRITE);
+  dataFile.println("time;AMPMETER;VOLTMETER;Acceleration_X;Acceleration_Y;Acceleration_Z;Linear Speed");
   ASSERT("card initialized.")
   dataFile.close();
 
@@ -51,7 +52,7 @@ void loop()
 
   if (actualInterval >= INTERVAL)
   {
-    dataFile = SD.open("test.csv", FILE_WRITE);
+    dataFile = SD.open("data.csv", FILE_WRITE);
 
     Vector normAccel = mpu.readNormalizeAccel(); // Read accelerometer info
 
@@ -68,23 +69,17 @@ void loop()
       FILE_SPACER
       dataFile.print((float)normAccel.YAxis);
       FILE_SPACER
-      dataFile.println((float)normAccel.ZAxis);
+      dataFile.print((float)normAccel.ZAxis);
+      FILE_SPACER
+      dataFile.println(tachymeter.getSpeed());
 
-      Serial.print(ampMeter.getCurrent());
-      Serial.print(" | ");
-      Serial.print(voltMeter.getMeanVoltage());
-      Serial.print(" | ");
-      Serial.print((float)normAccel.XAxis);
-      Serial.print(" | ");
-      Serial.print((float)normAccel.YAxis);
-      Serial.print(" | ");
-      Serial.println((float)normAccel.ZAxis);
+      DEBUG_INFO()
 
-      ASSERT("Line added to file")
+      //ASSERT("Line added to file")
     }
     else
     {
-      ASSERT("error opening test.csv")
+      ASSERT("error opening data.csv")
     }
 
     dataFile.close();
